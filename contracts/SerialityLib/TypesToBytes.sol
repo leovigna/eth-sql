@@ -7,25 +7,26 @@ pragma solidity ^0.5.0;
  */
 
 library TypesToBytes {
-
+    
+    //
     function toBytes(address _input, uint _offst, bytes memory _output) internal pure {
 
         assembly {
             mstore(add(_output, _offst), _input)
         }
     }
+    
 
-    /*
     function toBytes(bytes32 _input, uint _offst, bytes memory _output) internal pure {
 
         assembly {
             mstore(add(_output, _offst), _input)
-            mstore(add(add(_output, _offst),32), add(_input,32))
+            mstore(add(add(_output, _offst),32), add(_input,32)) //Start
         }
     }
-    */
 
-    function toBytes(bytes32 _input, uint _offst, bytes memory _output) internal pure {
+    //Packed
+    function toBytesPacked(bytes32 _input, uint _offst, bytes memory _output) internal pure {
 
         assembly {
             mstore(add(_output, _offst), _input)
@@ -40,6 +41,7 @@ library TypesToBytes {
         }
     }
     
+    // string
     function toBytes(bytes memory _input, uint _offst, bytes memory _output) internal pure {
         uint256 stack_size = _input.length / 32;
         if(_input.length % 32 > 0) stack_size++;
@@ -51,6 +53,11 @@ library TypesToBytes {
                 _offst := sub(_offst , 32)
             }
         }
+    }
+
+    function toBytes(string memory _input, uint _offst, bytes memory _output) internal pure {
+        bytes memory _data = bytes(_input);
+        toBytes(_data, _offst, _output);
     }
 
     function toBytes(int _input, uint _offst, bytes memory  _output) internal pure {

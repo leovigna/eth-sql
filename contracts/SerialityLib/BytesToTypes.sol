@@ -66,7 +66,7 @@ library BytesToTypes {
                 _offst := sub(_offst, 32) // _offst -= 32
             }
         }
-    } 
+    }
 
     function toBytes32(bytes memory _input, uint256 _offst)
         internal

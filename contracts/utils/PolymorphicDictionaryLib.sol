@@ -255,16 +255,6 @@ library PolymorphicDictionaryLib {
     }
 
     /**
-     * @dev Get string value at dictionary[_key]. O(1).
-     * @param dictionary The PolymorphicDictionary.
-     * @param key The bytes32 key.
-     * @return string value.
-     */
-    function getStringForKey(PolymorphicDictionary storage dictionary, bytes32 key) internal view returns (string memory) {
-        return string(dictionary.OneToOneVariable.getValueForKey(key));
-    }
-
-    /**
      * @dev Get Bytes32Set value set at dictionary[_key]. O(1).
      * @param dictionary The PolymorphicDictionary.
      * @param key The bytes32 key.
