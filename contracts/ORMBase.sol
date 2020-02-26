@@ -1,7 +1,7 @@
 pragma solidity ^0.5.0;
 
 import "./utils/PolymorphicDictionaryLib.sol";
-
+ 
 contract ORMBase {
     using PolymorphicDictionaryLib for PolymorphicDictionaryLib.PolymorphicDictionary;
     PolymorphicDictionaryLib.PolymorphicDictionary internal database;
