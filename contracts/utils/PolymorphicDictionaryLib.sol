@@ -11,10 +11,15 @@ import "./Bytes32SetDictionaryLib.sol";
 import "./BytesSetDictionaryLib.sol";
 
 /**
-Abstracts management of multiple dictionary types.
-Avoids key conflicts.
-bytes32 => bytes32/bytes/{bytes32}/{bytes}
-*/
+ * @title Polymorphic dictionary to store data.
+ * Abstracts management of multiple dictionary types. Avoids key conflicts.
+ * Store data in dictionary[bytes32] => bytes32/bytes/{bytes32}/{bytes}
+ * Fixed value types (uint/int/address/bool) can also be used as
+ * converters are provided.
+ * @author Leo Vigna
+ * @notice You can use this contract to store generic data.
+ * @dev WARNING. Contract has NOT been audited.
+ */
 library PolymorphicDictionaryLib {
     //Sets
     using Bytes32SetLib for Bytes32SetLib.Bytes32Set;
