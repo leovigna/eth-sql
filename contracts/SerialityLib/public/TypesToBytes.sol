@@ -17,9 +17,15 @@ contract TypesToBytesPublic {
         return result;
     }
 
-    function toBytes(uint _offst, bytes32 _input) public pure returns (bytes memory) {
+    function toBytesPacked(uint _offst, bytes32 _input) public pure returns (bytes memory) {
         bytes memory result = new bytes(_offst);
-        _input.toBytes(_offst, result);
+        _input.toBytesPacked(_offst, result);
+        return result;
+    }
+
+    function toBytesWithLength(uint _offst, bytes32 _input) public pure returns (bytes memory) {
+        bytes memory result = new bytes(_offst);
+        _input.toBytesWithLength(_offst, result);
         return result;
     }
     

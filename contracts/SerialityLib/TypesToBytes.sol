@@ -17,11 +17,11 @@ library TypesToBytes {
     }
     
 
-    function toBytes(bytes32 _input, uint _offst, bytes memory _output) internal pure {
+    function toBytesWithLength(bytes32 _input, uint _offst, bytes memory _output) internal pure {
 
         assembly {
             mstore(add(_output, _offst), _input)
-            mstore(add(add(_output, _offst),32), add(_input,32)) //Start
+            mstore(add(add(_output, _offst),32), add(_input,32)) //32 bytes, big-endian size
         }
     }
 
@@ -30,7 +30,6 @@ library TypesToBytes {
 
         assembly {
             mstore(add(_output, _offst), _input)
-            //mstore(add(add(_output, _offst),32), add(_input,32)) (Packed encoding)
         }
     }
     

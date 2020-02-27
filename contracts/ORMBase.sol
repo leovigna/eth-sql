@@ -1,7 +1,8 @@
 pragma solidity ^0.5.0;
 
 import "./utils/PolymorphicDictionaryLib.sol";
- 
+import "./structs/TableLib.sol";
+
 contract ORMBase {
     //Libraries
     using PolymorphicDictionaryLib for PolymorphicDictionaryLib.PolymorphicDictionary;
@@ -22,20 +23,31 @@ contract ORMBase {
     PolymorphicDictionaryLib.PolymorphicDictionary internal dictionary;
 
     // ****************************** TABLE OPERATIONS ******************************
-    function create() public view returns (bool) {
-        return true;
+    function createTable(
+        bytes32 _name,
+        bytes32[] memory _columnName,
+        bytes32[] memory _columnDtype
+    ) public returns (bool) {
+        TableLib.Table memory table = TableLib.create(_name, _columnName, _columnDtype);
+        return createTable(table);
     }
 
-    function select() public view returns (bool) {
-        return true;
+    function createTable(TableLib.Table memory _table)
+        internal returns (bool) {
+        bytes memory encoded = _table.encode();
+        bool success = dictionary.addValueForKey(schemasPublicTables, encoded);
+        return success;
     }
 
-    function insert() public view returns (bool) {
-        return true;
+    function getTable(bytes32 _name)
+        internal view returns (TableLib.Table memory) {
+        bytes memory encoded = dictionary.getBytesForKey(_name);
+        return encoded.decodeTable();
     }
 
-    function delete() public view returns (bool) {
-        return true;
+    function getTableRaw(bytes32 _name)
+        internal view returns (bytes memory) {
+        return dictionary.getBytesForKey(_name);
     }
 
     // ****************************** DICTIONARY OPERATIONS ******************************

@@ -1,5 +1,6 @@
 dependencies:
   node-sql-parser: 1.7.2
+  squel: 5.13.0
 devDependencies:
   '@truffle/hdwallet-provider': 1.0.31
   chai: 4.2.0
@@ -3868,6 +3869,12 @@ packages:
       node: '>=0.10.0'
     resolution:
       integrity: sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g==
+  /squel/5.13.0:
+    dev: false
+    engines:
+      node: '>= 0.12.0'
+    resolution:
+      integrity: sha512-Fzd8zqbuqNwzodO3yO6MkX8qiDoVBuwqAaa3eKNz4idhBf24IQHbatBhLUiHAGGl962eGvPVRxzRuFWZlSf49w==
   /sshpk/1.16.1:
     dependencies:
       asn1: 0.2.4
@@ -4994,4 +5001,5 @@ specifiers:
   dotenv: ^8.2.0
   node-sql-parser: ^1.7.2
   solidity-docgen: ^0.3.14
+  squel: ^5.13.0
   web3: ^1.2.6
