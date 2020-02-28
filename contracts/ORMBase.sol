@@ -1,26 +1,36 @@
 pragma solidity ^0.5.0;
+pragma experimental ABIEncoderV2;
+
+import "@openzeppelin/upgrades/contracts/Initializable.sol";
 
 import "./utils/PolymorphicDictionaryLib.sol";
 import "./structs/TableLib.sol";
+import "./structs/ColumnLib.sol";
 
-contract ORMBase {
+contract ORMBase is Initializable {
     //Libraries
     using PolymorphicDictionaryLib for PolymorphicDictionaryLib.PolymorphicDictionary;
     using TableLib for TableLib.Table;
     using TableLib for bytes;
+    using ColumnLib for ColumnLib.Column;
+    using ColumnLib for bytes;
 
     //Constants
     //schemas
-    bytes32 constant schemas = 0x736368656d617300000000000000000000000000000000000000000000000000;
+    //bytes32 constant schemas = 0x736368656d617300000000000000000000000000000000000000000000000000;
     //schemas.public
-    bytes32 constant schemasPublic = 0x736368656d61732e7075626c6963000000000000000000000000000000000000;
+    //bytes32 constant schemasPublic = 0x736368656d61732e7075626c6963000000000000000000000000000000000000;
     //schemas.public.tables
     bytes32 constant schemasPublicTables = 0x736368656d61732e7075626c69632e7461626c65730000000000000000000000;
-    //schemas.public.indexes
-    bytes32 constant schemasPublicIndexes = 0x736368656d61732e7075626c69632e696e646578657300000000000000000000;
 
     //Storage
     PolymorphicDictionaryLib.PolymorphicDictionary internal dictionary;
+
+    //Create default tables
+    function initialize() external initializer returns (bool) {
+        bool s1 = dictionary.addKey(schemasPublicTables, PolymorphicDictionaryLib.DictionaryType.OneToManyFixed);
+        return s1;
+    }
 
     // ****************************** TABLE OPERATIONS ******************************
     function createTable(
@@ -32,22 +42,26 @@ contract ORMBase {
         return createTable(table);
     }
 
+    //TO DO name hash
     function createTable(TableLib.Table memory _table)
         internal returns (bool) {
+        //Add definition
+        //bytes32 label = keccak256(keccak256(schemasPublicTables), _table.name);
+        bool s2 = dictionary.addValueForKey(schemasPublicTables, _table.name);
         bytes memory encoded = _table.encode();
-        bool success = dictionary.addValueForKey(schemasPublicTables, encoded);
-        return success;
+        bool s1 = dictionary.setValueForKey(_table.name, encoded);
+        //Add data store key
+        //(default fixed)
+        //dictionary.addKey(_table, PolymorphicDictionaryLib.DictionaryType.OneToManyFixed);
+
+        return s1 && s2;
     }
 
+    // EXPERIMENTAL
     function getTable(bytes32 _name)
-        internal view returns (TableLib.Table memory) {
+        public view returns (TableLib.Table memory) {
         bytes memory encoded = dictionary.getBytesForKey(_name);
         return encoded.decodeTable();
-    }
-
-    function getTableRaw(bytes32 _name)
-        internal view returns (bytes memory) {
-        return dictionary.getBytesForKey(_name);
     }
 
     // ****************************** DICTIONARY OPERATIONS ******************************
@@ -83,11 +97,10 @@ contract ORMBase {
      * @param _key The bytes32 key.
      * @return bytes[] values at key.
      */
-    /** EXPERIMENTAL
+    // EXPERIMENTAL
     function enumerateForKeyOneToManyVariable(bytes32 _key) public view returns (bytes[] memory) {
         return dictionary.enumerateForKeyOneToManyVariable(_key);
     }
-    */
 
     // ****************************** CONTAINS OPERATIONS ******************************
     /**

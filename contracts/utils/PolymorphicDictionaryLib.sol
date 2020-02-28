@@ -72,6 +72,8 @@ library PolymorphicDictionaryLib {
             keysAll[idx] = keys3[i];
             idx++;
         }
+
+        return keysAll;
     }
 
     /**
