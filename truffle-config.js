@@ -13,8 +13,8 @@ module.exports = {
     //contracts_build_directory: "../client/src/contracts",
     networks: {
         development: {
-            gas: 6721975,
-            gasPrice: 0,
+            gas: process.env.LOCAL_GASLIMIT || 6721975,
+            gasPrice: process.env.LOCAL_GASPRICE || 0,
             provider: function () {
                 return new HDWalletProvider(process.env.LOCAL_HD_WALLET_MNEMONIC, process.env.LOCAL_RPC);
             },

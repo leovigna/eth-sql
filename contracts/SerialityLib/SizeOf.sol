@@ -10,9 +10,9 @@ library SizeOf {
 
     function size(string memory _in) internal pure  returns(uint _size){
         _size = bytes(_in).length / 32;
-         if(bytes(_in).length % 32 != 0)
+        if(bytes(_in).length % 32 != 0)
             _size++;
-            
+
         _size++; // first 32 bytes is reserved for the size of the string
         _size *= 32;
     }

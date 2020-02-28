@@ -29,7 +29,9 @@ library Bytes32SetLib {
 
     /**
      * @dev Add a value to a set. O(1).
-     * Returns false if the value was already in the set.
+     * @param set The Bytes32Set
+     * @param value The bytes32 value.
+     * @return false if the value was already in the set.
      */
     function add(Bytes32Set storage set, bytes32 value)
         internal
