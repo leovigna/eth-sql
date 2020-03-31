@@ -196,6 +196,7 @@ contract ORMBase is Initializable {
     function getInt256ForKey(bytes32 key) public view returns (int256) {
         return dictionary.getInt256ForKey(key);
     }
+    */
 
     /**
      * @dev Get address value at dictionary[_key]. O(1).
