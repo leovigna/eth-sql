@@ -32,9 +32,11 @@
   },
   "devDependencies": {
     "@truffle/hdwallet-provider": "^1.0.31",
+    "@types/node": "^13.7.7",
     "chai": "^4.x",
     "dotenv": "^8.2.0",
     "solidity-docgen": "^0.3.14",
+    "typescript": "^3.8.3",
     "web3": "^1.2.6"
   },
   "dependencies": {
