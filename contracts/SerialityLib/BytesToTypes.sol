@@ -66,7 +66,80 @@ library BytesToTypes {
                 _offst := sub(_offst, 32) // _offst -= 32
             }
         }
-    } 
+    }
+
+    function toBytes(bytes memory _input, uint256 _offst, bytes memory _output)
+        internal
+        pure
+    {
+        uint256 size = 32;
+        assembly {
+            let chunk_count
+
+            size := mload(add(_input, _offst))
+            chunk_count := add(div(size, 32), 1) // chunk_count = size/32 + 1
+            if gt(mod(size, 32), 0) {
+                chunk_count := add(chunk_count, 1) // chunk_count++
+            }
+            for {
+                let index := 0
+            } lt(index, chunk_count) {
+                index := add(index, 1)
+            } {
+                mstore(add(_output, mul(index, 32)), mload(add(_input, _offst)))
+                _offst := sub(_offst, 32) // _offst -= 32
+            }
+        }
+    }
+
+    /*
+    HARD    
+    function toBytesArray(bytes memory _input, uint256 _offst)
+        internal
+        pure
+        returns (bytes[] memory _output)
+    {
+        uint256 size = 32;
+        assembly {
+            let chunk_count
+            let input_start := add(_input, _offst)
+
+            size := mload(input_start)
+            chunk_count := add(div(size, 32), 1) // chunk_count = size/32 + 1
+            if gt(mod(size, 32), 0) {
+                chunk_count := add(chunk_count, 1) // chunk_count++
+            }
+
+            //Loop items (bytes). 
+            //Note items have variable size. 
+            for {
+                let index := 0
+                let pointer := 0
+                let subindex := 0
+                let subsize := 0
+            } lt(index, size) {} {
+                if (eq(subindex, subsize)) {
+                    // Load new item
+                    index := add(index, 1) //Increment next item
+                    subsize := mload(pointer) //Item size
+                }
+
+                if lt(subsize, 32) {
+                    mstore8(add(_output, pointer), mload(add(input_start, pointer)))
+                    pointer := add(chunk_count, 1) // Add 1 byte
+                } else {
+                    mstore(add(_output, pointer), mload(add(input_start, pointer)))
+                    pointer := add(chunk_count, 32) // Add 1 byte
+                }
+
+                pointer := add(pointer, 1) //Increment memory pointer
+                
+                mstore(add(_output, pointer), mload(add(_input, _offst)))
+                _offst := sub(_offst, 32) // _offst -= 32
+            }
+        }
+    }
+    */
 
     function toBytes32(bytes memory _input, uint256 _offst)
         internal
