@@ -2,10 +2,10 @@ pragma solidity ^0.5.0;
 pragma experimental ABIEncoderV2;
 
 import "@openzeppelin/upgrades/contracts/Initializable.sol";
-
-import "./utils/PolymorphicDictionaryLib.sol";
+import "@leovigna/sol-datastructs/src/contracts/PolymorphicDictionaryLib.sol";
 import "./structs/TableLib.sol";
 import "./structs/ColumnLib.sol";
+
 
 contract ORMBase is Initializable {
     //Libraries
@@ -28,7 +28,10 @@ contract ORMBase is Initializable {
 
     //Create default tables
     function initialize() external initializer returns (bool) {
-        bool s1 = dictionary.addKey(schemasPublicTables, PolymorphicDictionaryLib.DictionaryType.OneToManyFixed);
+        bool s1 = dictionary.addKey(
+            schemasPublicTables,
+            PolymorphicDictionaryLib.DictionaryType.OneToManyFixed
+        );
         return s1;
     }
 
@@ -38,13 +41,16 @@ contract ORMBase is Initializable {
         bytes32[] memory _columnName,
         bytes32[] memory _columnDtype
     ) public returns (bool) {
-        TableLib.Table memory table = TableLib.create(_name, _columnName, _columnDtype);
+        TableLib.Table memory table = TableLib.create(
+            _name,
+            _columnName,
+            _columnDtype
+        );
         return createTable(table);
     }
 
     //TO DO name hash
-    function createTable(TableLib.Table memory _table)
-        internal returns (bool) {
+    function createTable(TableLib.Table memory _table) internal returns (bool) {
         //Add definition
         //bytes32 label = keccak256(keccak256(schemasPublicTables), _table.name);
         bool s2 = dictionary.addValueForKey(schemasPublicTables, _table.name);
@@ -59,7 +65,10 @@ contract ORMBase is Initializable {
 
     // EXPERIMENTAL
     function getTable(bytes32 _name)
-        public view returns (TableLib.Table memory) {
+        public
+        view
+        returns (TableLib.Table memory)
+    {
         bytes memory encoded = dictionary.getBytesForKey(_name);
         return encoded.decodeTable();
     }
@@ -79,7 +88,11 @@ contract ORMBase is Initializable {
      * @param _type The dictionary type. OneToManyFixed/OneToManyVariable/OneToOneFixed/OneToOneVariable
      * @return bytes32[] dictionary keys.
      */
-    function enumerate(PolymorphicDictionaryLib.DictionaryType _type) public view returns (bytes32[] memory) {
+    function enumerate(PolymorphicDictionaryLib.DictionaryType _type)
+        public
+        view
+        returns (bytes32[] memory)
+    {
         return dictionary.enumerate(_type);
     }
 
@@ -88,7 +101,11 @@ contract ORMBase is Initializable {
      * @param _key The bytes32 key.
      * @return bytes32[] values at key.
      */
-    function enumerateForKeyOneToManyFixed(bytes32 _key) public view returns (bytes32[] memory) {
+    function enumerateForKeyOneToManyFixed(bytes32 _key)
+        public
+        view
+        returns (bytes32[] memory)
+    {
         return dictionary.enumerateForKeyOneToManyFixed(_key);
     }
 
@@ -98,7 +115,11 @@ contract ORMBase is Initializable {
      * @return bytes[] values at key.
      */
     // EXPERIMENTAL
-    function enumerateForKeyOneToManyVariable(bytes32 _key) public view returns (bytes[] memory) {
+    function enumerateForKeyOneToManyVariable(bytes32 _key)
+        public
+        view
+        returns (bytes[] memory)
+    {
         return dictionary.enumerateForKeyOneToManyVariable(_key);
     }
 
@@ -118,7 +139,10 @@ contract ORMBase is Initializable {
      * @param _type The dictionary type. OneToManyFixed/OneToManyVariable/OneToOneFixed/OneToOneVariable
      * @return true if key exists.
      */
-    function containsKey(bytes32 _key, PolymorphicDictionaryLib.DictionaryType _type) public view returns (bool) {
+    function containsKey(
+        bytes32 _key,
+        PolymorphicDictionaryLib.DictionaryType _type
+    ) public view returns (bool) {
         return dictionary.containsKey(_key, _type);
     }
 
@@ -128,7 +152,11 @@ contract ORMBase is Initializable {
      * @param _value The bytes32 value.
      * @return true if value exists at key.
      */
-    function containsValueForKey(bytes32 _key, bytes32 _value) public view returns (bool) {
+    function containsValueForKey(bytes32 _key, bytes32 _value)
+        public
+        view
+        returns (bool)
+    {
         return dictionary.containsValueForKey(_key, _value);
     }
 
@@ -138,7 +166,11 @@ contract ORMBase is Initializable {
      * @param _value The bytes value.
      * @return true if value exists at key.
      */
-    function containsValueForKey(bytes32 _key, bytes memory _value) public view returns (bool) {
+    function containsValueForKey(bytes32 _key, bytes memory _value)
+        public
+        view
+        returns (bool)
+    {
         return dictionary.containsValueForKey(_key, _value);
     }
 
@@ -196,7 +228,6 @@ contract ORMBase is Initializable {
     function getInt256ForKey(bytes32 key) public view returns (int256) {
         return dictionary.getInt256ForKey(key);
     }
-    */
 
     /**
      * @dev Get address value at dictionary[_key]. O(1).
@@ -222,7 +253,10 @@ contract ORMBase is Initializable {
      * @return Bytes32Set value set.
      */
     function getBytes32SetForKey(bytes32 key)
-        internal view returns (Bytes32SetLib.Bytes32Set memory) {
+        internal
+        view
+        returns (Bytes32SetLib.Bytes32Set memory)
+    {
         return dictionary.getBytes32SetForKey(key);
     }
 
@@ -232,7 +266,10 @@ contract ORMBase is Initializable {
      * @return BytesSet value set.
      */
     function getBytesSetForKey(bytes32 key)
-        internal view returns (BytesSetLib.BytesSet memory) {
+        internal
+        view
+        returns (BytesSetLib.BytesSet memory)
+    {
         return dictionary.getBytesSetForKey(key);
     }
 
@@ -242,27 +279,36 @@ contract ORMBase is Initializable {
      * @return bytes32[] value array.
      */
     function getBytes32ArrayForKey(bytes32 key)
-        public view returns (bytes32[] memory) {
+        public
+        view
+        returns (bytes32[] memory)
+    {
         return dictionary.getBytes32ArrayForKey(key);
     }
 
-     /**
+    /**
      * @dev Get bool[] value array at dictionary[key]. O(dictionary[key].length()).
      * @param key The bytes32 key.
      * @return bool[] value array.
      */
     function getBoolArrayForKey(bytes32 key)
-        public view returns (bool[] memory) {
+        public
+        view
+        returns (bool[] memory)
+    {
         return dictionary.getBoolArrayForKey(key);
     }
 
-     /**
+    /**
      * @dev Get uint256[] value array at dictionary[key]. O(dictionary[key].length()).
      * @param key The bytes32 key.
      * @return uint256[] value array.
      */
     function getUIntArrayForKey(bytes32 key)
-        public view returns (uint256[] memory) {
+        public
+        view
+        returns (uint256[] memory)
+    {
         return dictionary.getUIntArrayForKey(key);
     }
 
@@ -272,7 +318,10 @@ contract ORMBase is Initializable {
      * @return int256[] value array.
      */
     function getIntArrayForKey(bytes32 key)
-        public view returns (int256[] memory) {
+        public
+        view
+        returns (int256[] memory)
+    {
         return dictionary.getIntArrayForKey(key);
     }
 
@@ -282,7 +331,10 @@ contract ORMBase is Initializable {
      * @return address[] value array.
      */
     function getAddressArrayForKey(bytes32 key)
-        public view returns (address[] memory) {
+        public
+        view
+        returns (address[] memory)
+    {
         return dictionary.getAddressArrayForKey(key);
     }
 
@@ -294,7 +346,10 @@ contract ORMBase is Initializable {
      * @param _value The bytes32 value.
      * @return bool true if succeeded (no conflicts).
      */
-    function setValueForKey(bytes32 _key, bytes32 _value) public returns (bool) {
+    function setValueForKey(bytes32 _key, bytes32 _value)
+        public
+        returns (bool)
+    {
         return dictionary.setValueForKey(_key, _value);
     }
 
@@ -334,7 +389,10 @@ contract ORMBase is Initializable {
      * @param _value The address value.
      * @return bool true if succeeded (no conflicts).
      */
-    function setAddressForKey(bytes32 _key, address _value) public returns (bool) {
+    function setAddressForKey(bytes32 _key, address _value)
+        public
+        returns (bool)
+    {
         return dictionary.setAddressForKey(_key, _value);
     }
 
@@ -344,7 +402,10 @@ contract ORMBase is Initializable {
      * @param _value The bytes value.
      * @return bool true if succeeded (no conflicts).
      */
-    function setValueForKey(bytes32 _key, bytes memory _value) public returns (bool) {
+    function setValueForKey(bytes32 _key, bytes memory _value)
+        public
+        returns (bool)
+    {
         return dictionary.setValueForKey(_key, _value);
     }
 
@@ -355,7 +416,10 @@ contract ORMBase is Initializable {
      * @param _value The bytes32 value.
      * @return bool true if succeeded (no conflicts).
      */
-    function addValueForKey(bytes32 _key, bytes32 _value) public returns (bool) {
+    function addValueForKey(bytes32 _key, bytes32 _value)
+        public
+        returns (bool)
+    {
         return dictionary.addValueForKey(_key, _value);
     }
 
@@ -395,7 +459,10 @@ contract ORMBase is Initializable {
      * @param _value The address value.
      * @return bool true if succeeded (no conflicts).
      */
-    function addAddressForKey(bytes32 _key, address _value) public returns (bool) {
+    function addAddressForKey(bytes32 _key, address _value)
+        public
+        returns (bool)
+    {
         return dictionary.addAddressForKey(_key, _value);
     }
 
@@ -405,7 +472,10 @@ contract ORMBase is Initializable {
      * @param _value The variable value.
      * @return bool true if succeeded (no conflicts).
      */
-    function addValueForKey(bytes32 _key, bytes memory _value) public returns (bool) {
+    function addValueForKey(bytes32 _key, bytes memory _value)
+        public
+        returns (bool)
+    {
         return dictionary.addValueForKey(_key, _value);
     }
 
@@ -416,7 +486,10 @@ contract ORMBase is Initializable {
      * @param _type The dictionary type. OneToManyFixed/OneToManyVariable/OneToOneFixed/OneToOneVariable
      * @return bool true if succeeded (no conflicts).
      */
-    function addKey(bytes32 _key, PolymorphicDictionaryLib.DictionaryType _type) public returns (bool) {
+    function addKey(bytes32 _key, PolymorphicDictionaryLib.DictionaryType _type)
+        public
+        returns (bool)
+    {
         return dictionary.addKey(_key, _type);
     }
 
@@ -435,7 +508,10 @@ contract ORMBase is Initializable {
      * @param _value The bytes32 value.
      * @return bool true if succeeded (no conflicts).
      */
-    function removeValueForKey(bytes32 _key, bytes32 _value) public returns (bool) {
+    function removeValueForKey(bytes32 _key, bytes32 _value)
+        public
+        returns (bool)
+    {
         return dictionary.removeValueForKey(_key, _value);
     }
 
@@ -445,8 +521,10 @@ contract ORMBase is Initializable {
      * @param _value The bytes value.
      * @return bool true if succeeded (no conflicts).
      */
-    function removeValueForKey(bytes32 _key, bytes memory _value) public returns (bool) {
+    function removeValueForKey(bytes32 _key, bytes memory _value)
+        public
+        returns (bool)
+    {
         return dictionary.removeValueForKey(_key, _value);
     }
-
 }

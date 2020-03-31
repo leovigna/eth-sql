@@ -1,14 +1,10 @@
 .idea
-
-accounts.js
-
 .env
 .openzeppelin
 !.openzeppelin/project.json
 
 node_modules
 build
-app/src/contracts
 .DS_Store
 
 .openzeppelin/.session
