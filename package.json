@@ -26,6 +26,12 @@
     "files": [
         "src/**/*"
     ],
+    "scripts": {
+        "postinstall": "npm run compile && npm run typechain",
+        "compile": "oz compile",
+        "typechain": "npm run typechain:web3",
+        "typechain:web3": "typechain --target=web3-v1 --outDir src/contracts/web3 \"**/abi/**/*.json\""
+    },
     "dependencies": {
         "@leovigna/sol-datastructs": "^0.0.2-alpha.0",
         "@openzeppelin/upgrades": "^2.8.0"
@@ -35,6 +41,7 @@
         "truffle": "^5.1.19",
         "typechain": "^1.0.5",
         "typechain-target-ethers": "^1.0.4",
-        "typechain-target-truffle": "^1.0.2"
+        "typechain-target-truffle": "^1.0.2",
+        "typechain-target-web3-v1": "^1.0.4"
     }
 }
