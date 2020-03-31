@@ -7,18 +7,22 @@
     "private": false,
     "repository": {
         "type": "git",
-        "url": "https://github.com/leovigna/eth-sql.git"
+        "url": "https://github.com/leovigna/sol-sql.git"
     },
     "bugs": {
-        "url": "https://github.com/leovigna/eth-sql/issues"
+        "url": "https://github.com/leovigna/sol-sql/issues"
     },
     "engines": {
         "node": ">=10.0.0"
     },
     "keywords": [
+        "datastructure",
+        "dictionary",
+        "set",
+        "mapping",
         "SQL",
-        "Ethereum",
-        "Solidity",
+        "ethereum",
+        "solidity",
         "orm",
         "nodejs",
         "object relational mapper"
@@ -43,5 +47,8 @@
         "typechain-target-ethers": "^1.0.4",
         "typechain-target-truffle": "^1.0.2",
         "typechain-target-web3-v1": "^1.0.4"
+    },
+    "publishConfig": {
+        "access": "public"
     }
 }
