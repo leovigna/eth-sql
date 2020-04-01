@@ -28,7 +28,7 @@ contract ORMBase {
     //Create default tables
     //Override this for OpenZepelin initializer
     function initialize() public returns (bool) {
-        _initialize()
+        _initialize();
     }
 
     function _initialize() internal returns (bool) {
