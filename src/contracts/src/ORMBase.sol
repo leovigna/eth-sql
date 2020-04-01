@@ -1,13 +1,12 @@
 pragma solidity ^0.5.0;
 pragma experimental ABIEncoderV2;
 
-import "@openzeppelin/upgrades/contracts/Initializable.sol";
-import "@leovigna/sol-datastructs/src/contracts/PolymorphicDictionaryLib.sol";
+import "sol-datastructs/src/contracts/PolymorphicDictionaryLib.sol";
 import "./structs/TableLib.sol";
 import "./structs/ColumnLib.sol";
 
 
-contract ORMBase is Initializable {
+contract ORMBase {
     //Libraries
     using PolymorphicDictionaryLib for PolymorphicDictionaryLib.PolymorphicDictionary;
     using TableLib for TableLib.Table;
@@ -27,7 +26,12 @@ contract ORMBase is Initializable {
     PolymorphicDictionaryLib.PolymorphicDictionary internal dictionary;
 
     //Create default tables
-    function initialize() external initializer returns (bool) {
+    //Override this for OpenZepelin initializer
+    function initialize() public returns (bool) {
+        _initialize()
+    }
+
+    function _initialize() internal returns (bool) {
         bool s1 = dictionary.addKey(
             schemasPublicTables,
             PolymorphicDictionaryLib.DictionaryType.OneToManyFixed

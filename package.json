@@ -1,6 +1,6 @@
 {
-    "name": "@leovigna/sol-sql",
-    "version": "0.0.1",
+    "name": "sol-sql",
+    "version": "0.0.2",
     "description": "SQL for Ethereum smart contracts. Makes storage and relationship management as easy as SQL commands.",
     "author": "Leo Vigna",
     "license": "MIT",
@@ -37,8 +37,7 @@
         "typechain:web3": "typechain --target=web3-v1 --outDir src/contracts/web3 \"**/abi/**/*.json\""
     },
     "dependencies": {
-        "@leovigna/sol-datastructs": "^0.0.2-alpha.0",
-        "@openzeppelin/upgrades": "^2.8.0"
+        "sol-datastructs": "^0.0.4-alpha.0"
     },
     "devDependencies": {
         "ethers": "^4.0.46",
@@ -50,5 +49,6 @@
     },
     "publishConfig": {
         "access": "public"
-    }
+    },
+    "gitHead": "6124e4cd5f22c9be0cc539f5c19640f0ee7915ed"
 }
