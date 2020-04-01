@@ -1,6 +1,6 @@
 {
     "name": "sol-sql",
-    "version": "0.0.2",
+    "version": "0.0.0",
     "description": "SQL for Ethereum smart contracts. Makes storage and relationship management as easy as SQL commands.",
     "author": "Leo Vigna",
     "license": "MIT",
